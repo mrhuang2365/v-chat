@@ -15,7 +15,7 @@ export default {
   created() {
     this.$http.post('/api', { name: 'huang' })
     .then((data) => {
-      console.log(data);      
+      console.log('---------', data);      
     })
     .catch((err) => {
       console.log(err);

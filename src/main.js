@@ -6,7 +6,9 @@ import router from './router'
 import axios from 'axios'
 import './lib/WsClient'
 
+axios.defaults.withCredentials = true
 Vue.prototype.$http = axios
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

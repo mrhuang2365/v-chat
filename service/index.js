@@ -13,6 +13,12 @@ global.project = {}
 global.project.server = server
 
 require('./WsServer')
+app.use(require('./serssion'))
+
+app.use('/', (req, res, next) => {
+  debug('----session', req.url, req.session, req.session.sign)
+  next()
+})
 
 server.listen(Port, () => {
   debug('Listening on Port:', Port)

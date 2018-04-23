@@ -11,9 +11,9 @@ class Ws {
     // createWs
     this.createWs()
 
-    setInterval(() => {
-      this.heartBeat()
-    }, 5000)
+    // setInterval(() => {
+    // this.heartBeat()
+    // }, 5000)
   }
   // 创建ws
   createWs () {
@@ -97,6 +97,7 @@ class Ws {
     }
     return false
   }
+  // 发送心跳
   heartBeat () {
     this.broadcast('heartbeat', {name: 'jshuang'}, (err, event) => {
       if (err) {
@@ -104,6 +105,7 @@ class Ws {
       }
     })
   }
+  // 发送信息
   send (connId, name, data, callback) {
     const conn = this.wsConnections[connId]
     const event = {
@@ -117,6 +119,7 @@ class Ws {
       callback('Connect already closed!', { connId })
     }
   }
+  // ws广播
   broadcast (name, data, callback) {
     debug('wsConnections Length:', _.size(this.wsConnections))
     _.forEach(this.wsConnections, (conn) => {
