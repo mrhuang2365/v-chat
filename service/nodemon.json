@@ -1,0 +1,16 @@
+{
+  "verbose": false,
+  "watch:": [
+    "./"
+  ],
+  "ignore": [
+    "build/package.json",
+    "config",
+    "static"
+  ],
+  "exec": "node ./index.js",
+  "ext": "js json",
+  "events": {
+    "restart": "echo '\n\n ---- RESTART ----'"
+  }
+}
