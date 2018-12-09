@@ -1,3 +1,4 @@
+const process = require('process')
 const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -12,8 +13,9 @@ const server = http.createServer(app)
 global.project = {}
 global.project.server = server
 
+debug('Process argv:', process.argv)
 // websocket服务
-require('./WsServer')
+require('./ws/wsServer')
 // session服务
 require('./session').sessionInit(app)
 
