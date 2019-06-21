@@ -277,7 +277,7 @@ class WsServer {
       } else if (_.toNumber(event.data.beat) === hbid) {
         // 保存心跳应答信息到日志
         event.at = new Date()
-        debug(`Heartbeat OK: cid=${event.connId}, eid=${event.id}, ms=${event.duration}`)
+        // debug(`Heartbeat OK: cid=${event.connId}, eid=${event.id}, ms=${event.duration}`)
       } else {
         debug('Heartbeat Err', event.data.beat, hbid)
         this._closeConnection(event.connId, 4000, 'Heartbeat Reply Format Error')

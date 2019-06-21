@@ -50,7 +50,7 @@ class WsClient {
   constructor () {
     this._ws = null
     this._wsServerAddr = 'ws://localhost:3000'
-    this._mac = ''
+
     // 接收事件监听器，使用on注册
     this._eventListener = new EE()
     this._sendTrackEventId = 0 // 发送Id计数
@@ -72,9 +72,8 @@ class WsClient {
     }
   }
   // 创建连接，开启定时检测
-  start (curMac) {
+  start () {
     if (!this._runningStatus) {
-      this._mac = curMac
       this._runningStatus = true
       // 创建ws连接
       this._connectToServer(1)
@@ -114,7 +113,7 @@ class WsClient {
   }
   /* *********************  私有函数  ********************************** */
   _connectToServer (n) {
-    debug('=======================conn', n)
+    debug('ConnectToServer', n)
     this._statusErrCount = 0
     this._ws = new WebSocket(this._wsServerAddr, 'ws.event')
     debug(`connect to ws server:${this._wsServerAddr}`)
@@ -131,7 +130,7 @@ class WsClient {
     this._ws.onopen = () => {
       // 发送本机mac
       this._send('wsOpen', {
-        mac: this._mac
+        
       }, (err, event) => {
         debug('Websocket Connected Successed!', err, event)
         if (!err) {
@@ -233,6 +232,7 @@ class WsClient {
       // process.exit(1)
     }
   }
+  // 发送消息
   _send (name, data, callback) {
     if (this._ws) {
       this._sendTrackEventId += 1
@@ -243,7 +243,7 @@ class WsClient {
           data
         }
       }
-      debug('-------SEND-------:2222', event)
+      debug('Send Msg, event:', event)
       this._ws.send(JSON.stringify(event))
       this._sendEventTracker[event.id] = {
         event,

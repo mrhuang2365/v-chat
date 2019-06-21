@@ -3,14 +3,21 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import axios from 'axios'
 import './lib/index'
 
-axios.defaults.withCredentials = true
-Vue.prototype.$http = axios
+import YDUI from 'vue-ydui' /* 相当于import YDUI from 'vue-ydui/ydui.rem.js' */
+import 'vue-ydui/dist/ydui.rem.css'
+import { Input } from 'vue-ydui/dist/lib.px/input'
+
+import http from './lib/http'
+
+Vue.component(Input.name, Input)
+
+Vue.prototype.$http = http
 
 Vue.config.productionTip = false
 
+Vue.use(YDUI)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
