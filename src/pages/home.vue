@@ -18,6 +18,7 @@
 <script>
 /* eslint-disable */
 const debug = require('debug')('js:home')
+
 export default {
   name: 'HelloWorld',
   data () {

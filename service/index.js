@@ -26,13 +26,6 @@ server.listen(Port, () => {
   debug('Listening on Port:', Port)
 })
 
-app.post('/api/test', (req, res) => {
-  debug('Req Body:', req.body)
-  res.status(200).json({data: 'ok'})
-})
-app.get('/api/test1', (req, res) => {
-  debug('Req Test:', req.query)
-  res.sendfile(path.resolve(__dirname, '../static/logo.png'))
-})
+app.use('/api', require('./router'))
 
 require('./mongo')

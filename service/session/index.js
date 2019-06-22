@@ -1,6 +1,7 @@
 const expressSession = require('express-session')
 const MongoStrore = require('connect-mongo')(expressSession)
 const debug = require('debug')('js:session')
+const whiteList = require('./whiteList')
 
 const app = global.project.app
 const mongoStoreOption = {
@@ -21,12 +22,14 @@ session.sessionOptions = sessionOptions
 app.use(session)
 app.use('/', (req, res, next) => {
   debug('----session', req.url, req.session)
+  if (whiteList.indexOf(req.url) >= 0) {
+    next()
+    return
+  }
   if (req.session.username) {
     req.session._garbage = Date()
-    debug('----session username:', req.session.username, req.session._garbage)
+    next()
   } else {
-    debug('register username')
-    req.session.username = 'huang'
+    res.status(401).json({body: '认证已过期，请重新登录'})
   }
-  next()
 })

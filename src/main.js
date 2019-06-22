@@ -4,23 +4,20 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './lib/index'
-
-import YDUI from 'vue-ydui' /* 相当于import YDUI from 'vue-ydui/ydui.rem.js' */
-import 'vue-ydui/dist/ydui.rem.css'
-import { Input } from 'vue-ydui/dist/lib.px/input'
-
+import store from './store'
 import http from './lib/http'
-
-Vue.component(Input.name, Input)
+import iView from 'iview'
+import 'iview/dist/styles/iview.css'
+import './router/routerCtrl'
 
 Vue.prototype.$http = http
-
 Vue.config.productionTip = false
 
-Vue.use(YDUI)
+Vue.use(iView)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

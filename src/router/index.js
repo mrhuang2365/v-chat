@@ -11,9 +11,9 @@ export default new Router({
       component: (r) => require.ensure([], () => r(require('@/pages/home.vue')))
     },
     {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: (r) => require.ensure([], () => r(require('@/components/HelloWorld')))
+      path: '/login',
+      name: 'login',
+      component: (r) => require.ensure([], () => r(require('@/pages/login.vue')))
     }
   ]
 })
