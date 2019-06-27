@@ -122,11 +122,12 @@ $primary:#2d8cf0;
       </div>
     </Card>
     <div class="note">
-      Power By @Mrhuang2365 © 2019 版权所有
+      Power By @Mrhuang2365 ©2019 版权所有
     </div>
   </div>
 </template>
 <script>
+const crypto = require('crypto-js');
 const _d = require('debug')('js:login');
 
 export default {
@@ -143,7 +144,7 @@ export default {
       remember:false,
       ruleValidate:{
         name: { required: true, message: '请输入账号名', trigger: 'blur' },
-        pwd: { required: true, message: '请输入密码', trigger: 'blur' },
+        pwd: { required: true, validator: this.validatePwd, trigger: 'blur' },
         pwd1: { required: true, validator: this.validatePwd1, trigger: 'blur' },
         code: { required: true, message: '请输入验证码', trigger: 'blur' },
       },
@@ -154,6 +155,15 @@ export default {
     reset(v){
       this.login = v;
       this.$refs.formValidate.resetFields();
+    },
+    validatePwd(rule, value, callback){
+      if (value === '') {
+        callback(new Error('请输入您的密码'));
+      } else if ( value.length < 6 ) {
+        callback(new Error('密码太短了!'));
+      } else {
+        callback();
+      }
     },
     validatePwd1(rule, value, callback){
       if (value === '') {
@@ -170,10 +180,26 @@ export default {
         this.remember = true
       }
     },
+    // 登录
+    async onSignIn(){
+      try {
+        const password = crypto.MD5(this.userInfo.pwd).toString();
+        const data = {
+          name: this.userInfo.name,
+          password: password,
+          code: this.userInfo.code,
+        }
+        _d('data:', data);
+        const res = await this.$http.post('/api/login/signIn', data);
+        _d('onSignIn, res:', res);
+      } catch (error) {
+        _d('onSignIn, error:', error);
+      }
+    },
     signIn(){
       this.$refs.formValidate.validate((valid) => {
         if (valid) {
-            this.$Message.success('Success!');
+          this.onSignIn();
         } else {
           
         }
@@ -181,9 +207,12 @@ export default {
     },
     async onSignUp(){
       try {
+        const password = crypto.MD5(this.userInfo.pwd).toString();
         const data = {
-          userName: ''
+          name: this.userInfo.name,
+          password: this.userInfo.name,
         }
+        _d('data:', data)
       } catch (error) {
         
       }
@@ -191,7 +220,6 @@ export default {
     signUp(){
       this.$refs.formValidate.validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
           this.onSignUp();
         } else {
           
