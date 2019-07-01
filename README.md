@@ -14,7 +14,7 @@
 >* [mongodb node语法点这里](http://mongodb.github.io/node-mongodb-native/3.3/api/)
 
 #### Development Setup
-* 项目地址：git@github.com:mrhuang2365/mrhuang.git
+* 项目地址：https://github.com/mrhuang2365/v-chat
 ```sh
 # clone project
 git clone git@github.com:mrhuang2365/mrhuang.git
