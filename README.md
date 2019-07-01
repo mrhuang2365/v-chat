@@ -7,7 +7,9 @@
 
 #### 技术栈
 * 后台：node + express + mongodb + websocket
+* 后台服务管理：pm2
 * 前端：vue + vuex + vue-router + websocket
+>* [pm2 点这里](http://pm2.keymetrics.io/docs/usage/quick-start/)
 >* [mongodb 安装点这里](https://www.mongodb.com/download-center/community)
 >* [mongodb node语法点这里](http://mongodb.github.io/node-mongodb-native/3.3/api/)
 
@@ -18,9 +20,13 @@
 git clone git@github.com:mrhuang2365/mrhuang.git
 # install deps
 npm install
-# build
+# 后台启动
+DEBUG=js* node ./service/index.js
+或者
+DEBUG=js* pm2 start ./service/index.js --watch ./service
+# 前端打包
 npm run build
-# run dev
+# 前端启动
 npm run dev
 ```
 
