@@ -13,7 +13,7 @@ class WsService {
     this._eventListener = new EventEmitter()
     this._checkHeartBeatTimer = null
 
-    this.start()
+    // this.start()
     this._initWsClient()
   }
   /* **************  公有函数  *************** */

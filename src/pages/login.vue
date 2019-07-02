@@ -91,14 +91,17 @@ $primary:#2d8cf0;
             <Input v-model="userInfo.name" placeholder="请输入账号" :maxlength="16" size="large" />
           </FormItem>
           <FormItem label="密码:" prop="pwd" class="form-item">
-            <Input v-model="userInfo.pwd" type="password" size="large" :minlength="6" :maxlength="16" placeholder="请输入6-16位密码"/>
+            <Input v-model="userInfo.pwd" type="password" size="large" :minlength="6" :maxlength="16" placeholder="请输入6-16位密码"
+            @keyup.enter.native="login ? signIn() : signUp()" />
           </FormItem>
           <FormItem v-if="!login" label="确认密码:" prop="pwd1" class="form-item">
-            <Input v-model="userInfo.pwd1" type="password" size="large" :minlength="6" :maxlength="16" placeholder="请再次输入密码"/>
+            <Input v-model="userInfo.pwd1" type="password" size="large" :minlength="6" :maxlength="16" placeholder="请再次输入密码"
+              @keyup.enter.native="login ? signIn() : signUp()"/>
           </FormItem>
           <FormItem label="验证码:" prop="code" class="form-item">
             <div class="code-item">
-              <Input style="width:150px" v-model="userInfo.code" size="large" placeholder="请输入验证码" />
+              <Input style="width:150px" v-model="userInfo.code" size="large" placeholder="请输入验证码"
+                @keyup.enter.native="login ? signIn() : signUp()" />
               <div class="img" @click="getCapt()" v-html="captSvg"></div>
             </div>
           </FormItem>
@@ -106,10 +109,10 @@ $primary:#2d8cf0;
             <Checkbox v-model="remember">记住账号</Checkbox>
           </div>
           <div class="button-item">
-            <Button type="primary" v-if="login" long @click="signIn()">登录
+            <Button type="primary" style="position:relative" v-if="login" long @click="signIn()">登录
               <Spin size="large" fix v-if="loading"></Spin>
             </Button>
-            <Button type="primary" v-else long @click="signUp()">注册
+            <Button type="primary" style="position:relative" v-else long @click="signUp()">注册
               <Spin size="large" fix v-if="loading"></Spin>
             </Button>
           </div>
@@ -122,11 +125,12 @@ $primary:#2d8cf0;
       </div>
     </Card>
     <div class="note">
-      Power By @Mrhuang2365 ©2019 版权所有
+      Power By @Mrhuang2365 email:13809415342@sina.cn
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 const crypto = require('crypto-js');
 const _d = require('debug')('js:login');
 
@@ -134,12 +138,12 @@ export default {
   data(){
     return {
       userInfo:{
-        name: '',
-        pwd: '',
+        name: 'admin',
+        pwd: 'huang123',
         pwd1: '',
         code: '',
       },
-      loading:false,
+      loading: false,
       login:true,
       remember:false,
       ruleValidate:{
@@ -152,6 +156,7 @@ export default {
     }
   },
   methods:{
+    ...mapActions('login', ['accountLogin']),
     reset(v){
       this.login = v;
       this.$refs.formValidate.resetFields();
@@ -181,7 +186,29 @@ export default {
       }
     },
     // 登录
-    async onSignIn(){
+    signIn(){
+      this.$refs.formValidate.validate(async (valid) => {
+        if (valid) {
+          this.loading = true;
+          const password = crypto.MD5(this.userInfo.pwd).toString();
+          const data = {
+            name: this.userInfo.name,
+            password: password,
+            code: this.userInfo.code,
+          }
+          try {
+            await  this.accountLogin({vm:this, data})            
+          } catch (error) {
+            
+          }
+          this.loading = false;
+        } else {
+
+        }
+      })
+    },
+    async onSignUp(){
+      this.loading = true;
       try {
         const password = crypto.MD5(this.userInfo.pwd).toString();
         const data = {
@@ -189,33 +216,13 @@ export default {
           password: password,
           code: this.userInfo.code,
         }
-        _d('data:', data);
-        const res = await this.$http.post('/api/login/signIn', data);
-        _d('onSignIn, res:', res);
+        await this.$http.post('/api/login/signUp', data)
+        this.$Message.success('注册成功，赶快登录吧');
+        this.reset(true);
+        this.getCapt();
       } catch (error) {
-        _d('onSignIn, error:', error);
       }
-    },
-    signIn(){
-      this.$refs.formValidate.validate((valid) => {
-        if (valid) {
-          this.onSignIn();
-        } else {
-          
-        }
-      })
-    },
-    async onSignUp(){
-      try {
-        const password = crypto.MD5(this.userInfo.pwd).toString();
-        const data = {
-          name: this.userInfo.name,
-          password: this.userInfo.name,
-        }
-        _d('data:', data)
-      } catch (error) {
-        
-      }
+      this.loading = false;
     },
     signUp(){
       this.$refs.formValidate.validate((valid) => {

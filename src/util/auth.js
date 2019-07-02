@@ -3,16 +3,27 @@ import jsCookie from 'js-cookie'
 const TokenKey = 'H_TOKEN'
 const USER_INFO = 'H_USER_INFO'
 
+export function setCookie(key, value) {
+  jsCookie.set(key, value)
+}
+export function getCookie(key) {
+  return jsCookie.get(key)
+}
+export function removeCookie(key) {
+  jsCookie.remove(key)
+}
+
 export function getToken () {
-  return jsCookie.get(TokenKey)
+  return getCookie(TokenKey)
 }
 
 export function setToken (token) {
-  return jsCookie.set(TokenKey, token)
+  // 过期时间1天
+  setCookie(TokenKey, token)
 }
 
 export function removeToken () {
-  return jsCookie.remove(TokenKey)
+  removeCookie(TokenKey)
 }
 
 export function setUserInfo (value) {

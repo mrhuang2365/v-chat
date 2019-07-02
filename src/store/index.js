@@ -4,19 +4,14 @@ import { getUserInfo, setUserInfo } from '../util/auth'
 
 Vue.use(Vuex)
 
+const files = require.context('./modules', false, /\.js$/)
+const modules = {}
+
+files.keys().forEach(key => {
+  modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default
+})
+
+
 export default new Vuex.Store({
-  state: {
-    userInfo: getUserInfo() || {}
-  },
-  getters: {
-    userInfo (state) {
-      return state.userInfo
-    }
-  },
-  mutations: {
-    userInfo (state, value) {
-      state.userInfo = value
-      setUserInfo(value)
-    }
-  }
+  modules
 })

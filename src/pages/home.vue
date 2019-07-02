@@ -8,9 +8,20 @@
 <template>
   <div class="hello">
     <h5>Mrhuang</h5>
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <polyline points="20,20 40,25 60,40 80,120 120,140 200,180"
-      style="fill:none;stroke:black;stroke-width:3" />
+    <svg width="325px" height="325px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <rect></rect>
+      <path d="M80 80
+              A 45 45, 0, 0, 0, 125 125
+              L 125 80 Z" fill="green"/>
+      <path d="M230 80
+              A 45 45, 0, 1, 0, 275 125
+              L 275 80 Z" fill="red"/>
+      <path d="M80 230
+              A 45 45, 0, 0, 1, 125 275
+              L 125 230 Z" fill="purple"/>
+      <path d="M230 230
+              A 45 45, 0, 1, 1, 275 275
+              L 275 230 Z" fill="blue"/>
     </svg>
   </div>
 </template>
@@ -30,7 +41,7 @@ export default {
   
   },
   created() {
-    this.$http.post('/api/test', {})
+    this.$http.post('/api/login/test', {})
     .then((res) => {
       debug('res', res);
     })
