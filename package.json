@@ -15,7 +15,7 @@
     "body-parser": "^1.18.2",
     "bufferutil": "^3.0.4",
     "connect-mongo": "^2.0.3",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-session": "^1.15.6",
     "mongodb": "^3.2.7",
     "svg-captcha": "^1.4.0",
